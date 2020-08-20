@@ -19,8 +19,12 @@
             </tr>
         {% endfor %}
         </table>
-        <p>Add a form here to get player input. Don't forget the submit button.</p>
-        <p>We’ll have some code here to insert error messages, if any. Stay tuned.</p>
+        <form>
+            <input type="text" name="player_input" value="">
+            <input type="submit" value="Move">
+        </form>
+        <p>{{pin}}</p>
+        <p>{{ui.errmsg}}</p>
         <!-- Modify this section END -->
     </body>
 </html>

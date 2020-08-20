@@ -421,7 +421,7 @@ class Board:
         return outp.split('\n')
 
 
-    def prompt(self):
+    def valinput(self, inputstr):
         if self.debug:
             print('== PROMPT ==')
         def valid_format(inputstr):
@@ -442,19 +442,16 @@ class Board:
             end = (int(end[0]), int(end[1]))
             return (start, end)
 
-        while True:
-            inputstr = input(f'{self.turn.title()} player: ')
-            if not valid_format(inputstr):
-                print('Invalid move. Please enter your move in the '
-                      'following format: __ __, _ represents a digit.')
-            elif not valid_num(inputstr):
-                print('Invalid move. Move digits should be 0-7.')
+        if not valid_format(inputstr):
+            return 'Invalid move. Please enter your move in the following format: __ __, _ represents a digit.'
+        elif not valid_num(inputstr):
+            return 'Invalid move. Move digits should be 0-7.'
+        else:
+            start, end = split_and_convert(inputstr)
+            if self.movetype(start, end) is None:
+                return 'Invalid move. Please make a valid move.'
             else:
-                start, end = split_and_convert(inputstr)
-                if self.movetype(start, end) is None:
-                    print('Invalid move. Please make a valid move.')
-                else:
-                    return start, end
+                return 69
 
     def update(self, start, end):
         '''
