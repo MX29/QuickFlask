@@ -217,13 +217,22 @@ class Board:
                 return True
         return False
     
+    def pawnscanpromote(self):
+        for coord in self.coords():
+            row = coord[1]
+            piece = self.get_piece(coord)
+            for opprow, colour in zip([0, 7], ['black', 'white']):
+                if row == opprow and piece.name == 'pawn' and piece.colour == colour:
+                    return True
+        return False
+
+
     def promotepawns(self, PieceClass=None):
         for coord in self.coords():
             row = coord[1]
             piece = self.get_piece(coord)
             for opprow, colour in zip([0, 7], ['black', 'white']):
-                if row == opprow and piece.name == 'pawn' \
-                        and piece.colour == colour:
+                if row == opprow and piece.name == 'pawn' and piece.colour == colour:
                     if PieceClass is None:
                         PieceClass = self.promoteprompt()
                     promoted_piece = PieceClass(colour)
@@ -476,7 +485,6 @@ class Board:
         else:
             raise MoveError('Unknown error, please report '
                              f'(movetype={repr(movetype)}).')
-        self.promotepawns()
         if not self.alive('white', 'king'):
             self.winner = 'black'
         elif not self.alive('black', 'king'):

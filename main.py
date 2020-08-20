@@ -6,6 +6,18 @@ app = Flask(__name__)
 ui = WebInterface()
 game = Board()
 
+class Stack:
+    def __init__(self):
+        self.data = []
+    def push(self, value):
+        self.data.append(value)
+    def pop(self):
+        return self.data.pop(len(self.data) - 1)
+    def top(self):
+        return self.data[-1]
+
+movstack = Stack()
+
 @app.route('/')
 def root():
     return render_template('index.html')
@@ -28,7 +40,12 @@ def play():
     # TODO: if there is no player move, render the page template
     pinput = request.args.get('player_input', None)
     if pinput != None:
-        if game.valinput(pinput) != 69:
+        if pinput == "undo":
+            end, start = movstack.pop()
+            print(end, start)
+            game.move(start, end)
+            ui.board = game.display()
+        elif game.valinput(pinput) != 69:
             ui.errmsg = game.valinput(pinput) 
             pinput = "-"
         else:
@@ -37,8 +54,10 @@ def play():
             start = (int(start[0]), int(start[1]))
             end = (int(end[0]), int(end[1]))
             game.update(start, end)
+            movstack.push((start, end))
             ui.board = game.display()
-            game.next_turn()
+            if game.pawnscanpromote():
+                return redirect('/play')
 
 
     return render_template('chess.html', ui=ui, pin=pinput)
@@ -48,6 +67,11 @@ def play():
 
 @app.route('/promote')
 def promote():
-    pass
+    pinput = request.args.get('promo', None)
+    if pinput != None:
+        game.promotepawns(PieceClass=pinput)
+        ui.board = game.display()
+        return redirect('/play')
+    return render_template('promote.html')
 
 app.run('0.0.0.0')
