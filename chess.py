@@ -363,34 +363,63 @@ class Board:
         First letter is the colour (W for white, B for black).
         Second letter is the name (Starting letter for each piece).
         '''
+        outp = ''
         if self.debug:
             print('== DEBUG MODE ON ==')
         # helper function to generate symbols for piece
         def sym(piece):
-            colour_sym = piece.colour[0].upper()
-            piece_sym = piece.name[0].upper()
-            return f'{colour_sym}{piece_sym}'
+            colour = piece.colour.lower()
+            piece = piece.name.lower()
+            if colour == 'white':
+                if piece == 'king':
+                    return "♔"
+                elif piece == 'queen':
+                    return "♕"
+                elif piece == 'rook':
+                    return "♖"
+                elif piece == 'knight':
+                    return "♘"
+                elif piece == 'bishop':
+                    return "♗"
+                elif piece == 'pawn':
+                    return "♙"
+            elif colour == 'black':
+                if piece == 'king':
+                    return "♚"
+                elif piece == 'queen':
+                    return "♛"
+                elif piece == 'rook':
+                    return "♜"
+                elif piece == 'knight':
+                    return "♞"
+                elif piece == 'bishop':
+                    return "♝"
+                elif piece == 'pawn':
+                    return "♟"
 
         # Row 7 is at the top, so print in reverse order
-        print(' ' * 4, end='')
-        print('  '.join([f'{i:2}' for i in range(8)]), end='\n\n')
+        outp += ' ' * 4
+        outp += ' '.join([str(i) for i in range(8)]) + '\n\n'
         for row in range(7, -1, -1):
-            print(f'{row:2}  ', end='')
+            outp += f'{row:2}  '
             for col in range(8):
                 coord = (col, row)  # tuple
                 if coord in self.coords():
                     piece = self.get_piece(coord)
-                    print(f'{sym(piece)}', end='')
+                    outp += f'{sym(piece)}'
                 else:
                     piece = None
-                    print('  ', end='')
+                    outp += ' '
                 if col == 7:     # Put line break at the end
-                    print('')
+                    outp += '\n'
                 else:            # Print two spaces between pieces
-                    print('  ', end='')
-            print(' '*15)
+                    outp += ' '
+            outp += ' '*15 + '\n'
             if self.checkmate is not None:
-                print(f'{self.checkmate} is checkmated!')
+                return f'{self.checkmate} is checkmated!'
+        print(outp.split('\n'))
+        return outp.split('\n')
+
 
     def prompt(self):
         if self.debug:

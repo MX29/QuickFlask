@@ -7,8 +7,18 @@
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     </head>
     <body>
-        <!-- Modify this section START -->
-        <p>[Placeholder for chess board]</p>
+    <!-- Modify this section START -->
+        <table>
+        {% for row in ui.board %}
+            <tr>
+            {% for cell in row %}
+                <td>
+                    {{cell}}
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+        </table>
         <p>Add a form here to get player input. Don't forget the submit button.</p>
         <p>We’ll have some code here to insert error messages, if any. Stay tuned.</p>
         <!-- Modify this section END -->
