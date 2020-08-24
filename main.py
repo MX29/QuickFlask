@@ -52,6 +52,7 @@ def play():
                 print(end, start)
                 game.move(start, end)
                 ui.board = game.display()
+                game.next_turn()
         elif game.valinput(pinput) != 69:
             ui.errmsg = game.valinput(pinput) 
             pinput = "-"
@@ -64,7 +65,8 @@ def play():
             movstack.push((start, end))
             ui.board = game.display()
             if game.pawnscanpromote():
-                return redirect('/play')
+                return redirect('/promote')
+            game.next_turn()
 
 
     return render_template('chess.html', ui=ui, pin=pinput)
@@ -78,6 +80,7 @@ def promote():
     if pinput != None:
         game.promotepawns(PieceClass=pinput)
         ui.board = game.display()
+        game.next_turn()
         return redirect('/play')
     return render_template('promote.html')
 
