@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template, redirect, request
 from chess import WebInterface, Board
+import random
 
 app = Flask(__name__)
 ui = WebInterface()
@@ -15,6 +16,8 @@ class Stack:
         return self.data.pop(len(self.data) - 1)
     def top(self):
         return self.data[-1]
+    def length(self):
+        return len(self.data)
 
 movstack = Stack()
 
@@ -41,10 +44,14 @@ def play():
     pinput = request.args.get('player_input', None)
     if pinput != None:
         if pinput == "undo":
-            end, start = movstack.pop()
-            print(end, start)
-            game.move(start, end)
-            ui.board = game.display()
+            if movstack.length() == 0:
+                print('no more undos so go suck it')
+                ui.errmsg = random.choice(['No more undos for you','HoW bOuT nO?','What you gona do? Cry?','Make me','Undo what?'])
+            else:
+                end, start = movstack.pop()
+                print(end, start)
+                game.move(start, end)
+                ui.board = game.display()
         elif game.valinput(pinput) != 69:
             ui.errmsg = game.valinput(pinput) 
             pinput = "-"
