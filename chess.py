@@ -405,10 +405,10 @@ class Board:
                     return "♟"
 
         # Row 7 is at the top, so print in reverse order
-        outp += ' ' * 4
-        outp += ' '.join([str(i) for i in range(8)]) + '\n\n'
+        # outp += ' ' * 4
+        #outp += ' '.join([str(i) for i in range(8)]) + '\n'
         for row in range(7, -1, -1):
-            outp += f'{row:2}  '
+            #outp += f'{row:2}  '
             for col in range(8):
                 coord = (col, row)  # tuple
                 if coord in self.coords():
@@ -420,12 +420,14 @@ class Board:
                 if col == 7:     # Put line break at the end
                     outp += '\n'
                 else:            # Print two spaces between pieces
-                    outp += ' '
-            outp += ' '*15 + '\n'
+                    #outp += ' '
+                    pass
+                    
+            #outp += ' '*8 + '\n'
             if self.checkmate is not None:
                 return f'{self.checkmate} is checkmated!'
-        print(outp.split('\n'))
-        return outp.split('\n')
+        print(outp.split('\n')[:-1])
+        return outp.split('\n')[:-1]
 
 
     def valinput(self, inputstr):

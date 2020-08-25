@@ -33,7 +33,7 @@ def newgame():
     game.start()
     ui.board = game.display()
     ui.inputlabel = f'{game.turn} player: '
-    ui.errmsg = "No Errors Here"
+    ui.errmsg = ""
     ui.btnlabel = 'Move'
     return redirect('/play')
 
@@ -47,6 +47,7 @@ def play():
             if movstack.length() == 0:
                 print('no more undos so go suck it')
                 ui.errmsg = random.choice(['No more undos for you','HoW bOuT nO?','What you gona do? Cry?','Make me','Undo what?'])
+                ui.errmsg += " (Nothing to undo)"
             else:
                 end, start = movstack.pop()
                 print(end, start)

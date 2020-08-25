@@ -1,33 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" />
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
         <!-- Change your page title -->
         <title>This is the page title</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <!-- link rel="stylesheet" href="../static/styles.css" type="text/css" /-->
+        <style>
+            .grid {
+                display: table;
+                margin: auto;
+            }
+
+            .interface {
+                margin: 25px auto;
+                text-align: center;
+            }
+
+            .row {
+                display: table-row;
+            }
+
+            .cell {
+                display: table-cell;
+                border: 1px solid;
+                height: 25px;
+                width: 25px;
+                text-align: center;
+            }
+
+            .noborder {
+                border: 0px;
+            }
+
+            .error {
+                color: red;
+            }
+
+            .debug {
+                margin-top: 30px;
+                border: 2px solid red;
+                color: red;
+            }
+
+            .form {
+                text-align: center;
+                margin: 25px auto;
+            }
+        </style>
     </head>
     <body>
     <!-- Modify this section START -->
-        <table>
-        {% for row in ui.board %}
-            <tr>
-            {% for cell in row %}
-                <td>
-                    {{cell}}
-                </td>
+        <div class="grid">
+            <div class="row" id="label">
+                <div class="cell noborder" id="cell0">&nbsp;</div>
+                {% for cell in range(8) %}
+                <div class="cell noborder" id="cell{{ loop.index }}">{{ loop.index0 }}</div>
+                {% endfor %}
+            </div>
+            {% for row in ui.board %}
+            <div class="row" id="row{{ 8 - loop.index0 }}">
+                <div class="cell noborder" id="cell0">{{ 7 - loop.index0 }}</div>
+                {% for cell in row %}
+                <div class="cell" id="cell{{ loop.index }}">{{ cell }}</div>
+                {% endfor %}
+            </div>
             {% endfor %}
-            </tr>
-        {% endfor %}
-        </table>
-        <form>
-            <input type="text" name="player_input" value="">
-            <input type="submit" value="Move">
-        </form>
-        <form>
-            <input type="submit" name='player_input' value="undo">
-        </form>
-        <p>{{pin}}</p>
-        <p>{{ui.errmsg}}</p>
+        </div>
+        <div class='form'>
+            <form>
+                <input type="text" name="player_input" value="" />
+                <input type="submit" value="Move" class="submov" />
+            </form>
+            <br />
+            <form>
+                <input type="submit" name='player_input' value="undo" class="subundo" />
+            </form>
+        </div>
+        <p>Erorrs Show Up Here ----> {{ui.errmsg}}</p>
         <!-- Modify this section END -->
     </body>
 </html>
